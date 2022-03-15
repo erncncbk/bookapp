@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:bookapp/core/components/animations/bottomAnimation.dart';
 import 'package:bookapp/core/components/appbar/custom_app_bar.dart';
 import 'package:bookapp/core/components/bottomnavbar/custom_bottom_navigation_bar.dart';
 import 'package:bookapp/core/components/card/books_card.dart';
@@ -134,99 +135,92 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _selectedBooks(
       BookStateProvider _bookStateProvider, ThemeNotifier _themeProvider) {
-    return Stack(
-      children: [
-        Container(
-          padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.047,
-              right: MediaQuery.of(context).size.width * 0.047),
-          child: Card(
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // if you need this
-              side: BorderSide(
-                color: Colors.grey.withOpacity(0.2),
-                width: 3,
-              ),
+    return WidgetAnimator(
+      child: Container(
+        padding: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * 0.047,
+            right: MediaQuery.of(context).size.width * 0.047),
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // if you need this
+            side: BorderSide(
+              color: Colors.grey.withOpacity(0.2),
+              width: 3,
             ),
-            child: Padding(
-              padding:
-                  EdgeInsets.all(MediaQuery.of(context).size.width * 0.047),
-              child: Row(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 150,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(5),
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/$num.png",
-                          ),
-                          fit: BoxFit.contain,
-                        )),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.025,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TextWidget(
-                          text: _bookStateProvider
-                                  .getBookListModel?[num - 1].title
-                                  .toString() ??
-                              "",
-                          textStyle: TextStyle(
-                            color:
-                                _themeProvider.currentTheme != ThemeData.light()
-                                    ? AppColors.white
-                                    : AppColors.black,
-                            decoration: TextDecoration.none,
-                          ).normalStyle,
-                          textAlign: TextAlign.center,
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.047),
+            child: Row(
+              children: [
+                Container(
+                  width: 100,
+                  height: 150,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/$num.png",
                         ),
-                        TextWidget(
-                          text:
-                              "by ${_bookStateProvider.getBookListModel?[num - 1].author ?? ""}",
-                          textStyle: TextStyle(
-                            color: AppColors.kPrimary,
-                            decoration: TextDecoration.none,
-                          ).extraSmallStyle,
-                          textAlign: TextAlign.center,
-                        ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 5),
-                        //   child: GeneralButtonWidget(
-                        //     btnText: LocaleKeys.button_make_book,
-                        //     radius: 28,
-                        //     width: MediaQuery.of(context).size.width / 2.5,
-                        //     btnFunction: this.widget.btnFunction,
-                        //   ),
-                        // )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                        fit: BoxFit.contain,
+                      )),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.025,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TextWidget(
+                        text: "Editor's Pick",
+                        textStyle: TextStyle(
+                          color: AppColors.kPrimary,
+                          decoration: TextDecoration.none,
+                        ).largeStyle,
+                        textAlign: TextAlign.right,
+                      ),
+                      TextWidget(
+                        text: _bookStateProvider
+                                .getBookListModel?[num - 1].title
+                                .toString() ??
+                            "",
+                        textStyle: TextStyle(
+                          color:
+                              _themeProvider.currentTheme != ThemeData.light()
+                                  ? AppColors.white
+                                  : AppColors.black,
+                          decoration: TextDecoration.none,
+                        ).normalStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      TextWidget(
+                        text:
+                            "by ${_bookStateProvider.getBookListModel?[num - 1].author ?? ""}",
+                        textStyle: TextStyle(
+                          color: AppColors.kPrimary,
+                          decoration: TextDecoration.none,
+                        ).extraSmallStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(top: 5),
+                      //   child: GeneralButtonWidget(
+                      //     btnText: LocaleKeys.button_make_book,
+                      //     radius: 28,
+                      //     width: MediaQuery.of(context).size.width / 2.5,
+                      //     btnFunction: this.widget.btnFunction,
+                      //   ),
+                      // )
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ),
-        Positioned(
-          top: 10,
-          right: 30,
-          child: TextWidget(
-            text: "Editor's Pick",
-            textStyle: TextStyle(
-              color: AppColors.kPrimary,
-              decoration: TextDecoration.none,
-            ).largeStyle,
-            textAlign: TextAlign.right,
-          ),
-        )
-      ],
+      ),
     );
   }
 

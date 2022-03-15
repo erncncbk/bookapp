@@ -7,8 +7,10 @@ import 'package:bookapp/view/authentication/forgot_password_page.dart';
 import 'package:bookapp/view/authentication/login_page.dart';
 import 'package:bookapp/view/authentication/register_page.dart';
 import 'package:bookapp/view/book_detail.dart';
+import 'package:bookapp/view/campaigns/campaigns_page.dart';
 import 'package:bookapp/view/discover/discover_page.dart';
 import 'package:bookapp/view/discover/discover_detail.dart';
+import 'package:bookapp/view/gift/gift_card.dart';
 import 'package:bookapp/view/home_view.dart';
 import 'package:bookapp/view/notification/notification.dart';
 import 'package:bookapp/view/onboard_page/onboard_page.dart';
@@ -53,7 +55,13 @@ class NavigationRoute {
         return normalNavigate(const ForgotPasswordPage());
       //Account Page
       case NavigationConstants.accountPage:
-        return normalNavigate(AccountPageAnimator(), loginRequired: true);
+        return normalNavigate(const AccountPageAnimator(), loginRequired: true);
+      //Campaigns Page
+      case NavigationConstants.campaignsPage:
+        return normalNavigate(const CampaignsPage(), loginRequired: true);
+      //GiftCard Page
+      case NavigationConstants.giftCardPage:
+        return normalNavigate(const GiftCard(), loginRequired: true);
       //Notification
       case NavigationConstants.notificationPage:
         return normalNavigate(const NotificationPage(), loginRequired: true);

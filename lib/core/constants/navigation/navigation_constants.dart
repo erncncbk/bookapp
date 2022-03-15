@@ -13,14 +13,18 @@ class NavigationConstants {
   static const registerPage = '/registerPage';
   //Forgot Password
   static const forgotPassword = '/forgotPassword';
-  //Account
+  //Account Page
   static const accountPage = '/accountPage';
-  //Notification
+  //Notification Page
   static const notificationPage = '/notificationPage';
   //Search Page
   static const searchPage = '/searchPage';
-  //Discover
+  //Discover Page
   static const discoverPage = '/discoverPage';
   //Discover Detail
   static const discoverDetail = '/discoverDetail';
+  //Campaigns Page
+  static const campaignsPage = '/campaignsPage';
+  //GiftCard Page
+  static const giftCardPage = '/giftCardPage';
 }

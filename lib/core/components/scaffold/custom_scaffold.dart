@@ -10,7 +10,7 @@ class CustomScaffold extends StatefulWidget {
   const CustomScaffold({
     Key? key,
     required this.contentWidget,
-    required this.isAsyncCall,
+    this.isAsyncCall = false,
     required this.context,
     this.bottomNavigatorBar = const SizedBox(
       height: 0,

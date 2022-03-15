@@ -8,7 +8,10 @@ import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
 import 'package:bookapp/core/extensions/string_extension.dart';
 import 'package:bookapp/core/init/navigation/navigation_service.dart';
 import 'package:bookapp/core/init/notifier/theme_notifier.dart';
+import 'package:bookapp/core/init/provider/app_state/app_state_provider.dart';
 import 'package:bookapp/core/init/services/fb_auth_service.dart';
+import 'package:bookapp/locator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +26,8 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   final FBAuthService? _fbAuthService = FBAuthService();
   NavigationService navigation = NavigationService.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final AppStateProvider? _appStateProvider = locator<AppStateProvider>();
 
   bool isSwitched = false;
   @override
@@ -30,23 +35,33 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final _themeProvider = Provider.of<ThemeNotifier>(context);
 
     List<void Function()?> functionList = [
+      //Account Function
       (() {
         print(Constant.titleList[0]);
         navigation.navigateToPage(path: NavigationConstants.accountPage);
       }),
+      //Orders Function
       (() => {print(Constant.titleList[1])}),
-      (() => {print(Constant.titleList[2])}),
-      (() => {print(Constant.titleList[3])}),
-      (() => {print(Constant.titleList[4])}),
-      (() => {print(Constant.titleList[5])}),
-      (() => {print(Constant.titleList[6])}),
-      (() => {print(Constant.titleList[7])}),
+      //What Should I Read Function
       (() {
-        print(Constant.titleList[8]);
-        Navigator.pop(context);
-
-        _fbAuthService!.signOut(context);
+        print(Constant.titleList[2]);
+        navigation.navigateToPage(path: NavigationConstants.discoverPage);
       }),
+      //Bookmarks Function
+      (() => {print(Constant.titleList[3])}),
+      //Authors Function
+      (() => {print(Constant.titleList[4])}),
+      //Campaigns Function
+
+      (() {
+        print(Constant.titleList[5]);
+        navigation.navigateToPage(path: NavigationConstants.campaignsPage);
+      }),
+      (() {
+        print(Constant.titleList[6]);
+        navigation.navigateToPage(path: NavigationConstants.giftCardPage);
+      }),
+      (() => {print(Constant.titleList[7])}),
     ];
 
     return Drawer(
@@ -57,33 +72,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.account_circle,
-                        size: 60,
+                _appStateProvider!.getToken != null
+                    ? _accountInfo(_themeProvider)
+                    : Row(
+                        children: [
+                          Icon(
+                            Icons.account_circle,
+                            size: 80,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          InkWell(
+                              onTap: (() => navigation.navigateToPage(
+                                  path: NavigationConstants.loginPage)),
+                              child: TextWidget(
+                                text: "Login",
+                                textStyle: TextStyle(
+                                        color: _themeProvider.currentTheme !=
+                                                ThemeData.light()
+                                            ? AppColors.white
+                                            : AppColors.black,
+                                        decoration: TextDecoration.none,
+                                        fontWeight: FontWeight.w600)
+                                    .normalStyle,
+                                textAlign: TextAlign.left,
+                              ))
+                        ],
                       ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      InkWell(
-                          child: TextWidget(
-                        text: "Login",
-                        textStyle: TextStyle(
-                                color: _themeProvider.currentTheme !=
-                                        ThemeData.light()
-                                    ? AppColors.white
-                                    : AppColors.black,
-                                decoration: TextDecoration.none,
-                                fontWeight: FontWeight.w600)
-                            .normalStyle,
-                        textAlign: TextAlign.left,
-                      ))
-                    ],
-                  ),
-                ),
                 // Container(
                 //   height: MediaQuery.of(context).size.height * 0.0875,
                 //   width: double.infinity,
@@ -191,6 +209,117 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _accountInfo(ThemeNotifier _themeProvider) {
+    return Container(
+      child: StreamBuilder<QuerySnapshot>(
+          stream: _firestore.collection('users').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.data != null) {
+              Map<String, dynamic>? data =
+                  snapshot.data!.docs[0].data() as Map<String, dynamic>?;
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      minRadius: 10,
+                      // borderRadius: BorderRadius.circular(20),
+                      child: ClipOval(
+                        child: Image.network(
+                          data!['imageUrl'],
+                          fit: BoxFit.fill,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              width: 90.0,
+                              height: 90.0,
+                              alignment: Alignment.centerLeft,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.kPrimary),
+                                backgroundColor: AppColors.white,
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          width: 90.0,
+                          height: 90.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        child: TextWidget(
+                          text: 'Hello ${data['name']}',
+                          textStyle: TextStyle(
+                            color: AppColors.kPrimary,
+                            decoration: TextDecoration.none,
+                          ).extraSmallStyle,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          _fbAuthService!.signOut(context);
+                        },
+                        child: TextWidget(
+                          text: "Sign Out",
+                          textStyle: TextStyle(
+                            color:
+                                _themeProvider.currentTheme != ThemeData.light()
+                                    ? AppColors.white
+                                    : AppColors.black,
+                            decoration: TextDecoration.none,
+                          ).extraSmallStyle,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              );
+              //
+            } else {
+              return Row(
+                children: [
+                  Icon(
+                    Icons.account_circle,
+                    size: 60,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  InkWell(
+                      child: TextWidget(
+                    text: "Login",
+                    textStyle: TextStyle(
+                            color:
+                                _themeProvider.currentTheme != ThemeData.light()
+                                    ? AppColors.white
+                                    : AppColors.black,
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.w600)
+                        .normalStyle,
+                    textAlign: TextAlign.left,
+                  ))
+                ],
+              );
+            }
+          }),
     );
   }
 }

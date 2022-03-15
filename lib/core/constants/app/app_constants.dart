@@ -49,6 +49,16 @@ class Constant {
     "assets/images/d7.png",
     "assets/images/d8.png",
   ];
+  static const campaignsImages = [
+    "assets/images/c1.png",
+    "assets/images/c2.png",
+    "assets/images/c3.png",
+    "assets/images/c4.png",
+    "assets/images/c5.png",
+  ];
+  static const giftCard = [
+    "assets/images/g1.png",
+  ];
 
   static const List<String> titleList = [
     "Account",
@@ -59,7 +69,6 @@ class Constant {
     "Campaigns",
     "Gift Cart",
     "Settings",
-    "Sign Out",
   ];
   static const List<IconData> iconList = [
     Icons.account_circle_outlined,
@@ -70,7 +79,6 @@ class Constant {
     Icons.campaign_outlined,
     Icons.card_giftcard_outlined,
     Icons.settings,
-    Icons.logout_outlined,
   ];
 
   static const book_list = [

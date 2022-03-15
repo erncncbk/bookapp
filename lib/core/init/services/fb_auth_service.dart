@@ -69,6 +69,7 @@ class FBAuthService {
         'name': name,
         'fbUid': fbUid,
         "status": "Unavailable",
+        "imageUrl": "",
         'createdAt': DateTime.now().millisecondsSinceEpoch,
       });
       _appStateProvider!.setIsProgressIndicatorVisible(false);

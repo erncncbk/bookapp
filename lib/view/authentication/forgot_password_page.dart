@@ -1,4 +1,5 @@
 import 'package:bookapp/core/components/alert/alert_dialog.dart';
+import 'package:bookapp/core/components/animations/bottomAnimation.dart';
 import 'package:bookapp/core/components/clipper/custom_clipper.dart';
 import 'package:bookapp/core/components/textFormField/custom_text_form_field_widget.dart';
 import 'package:bookapp/core/components/text_widget.dart';
@@ -186,40 +187,42 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       SizedBox(
                         height: context.highValue,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextWidget(
-                            text: 'Send Request',
-                            textStyle: TextStyle(
-                              color: _themeProvider.currentTheme !=
-                                      ThemeData.light()
-                                  ? AppColors.white
-                                  : AppColors.black,
-                              fontWeight: FontWeight.w800,
-                            ).largeStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              _forgotPassword();
-                            },
-                            child: ClipOval(
-                              clipBehavior: Clip.hardEdge,
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                decoration:
-                                    BoxDecoration(color: AppColors.kSecondary),
-                                child: Icon(
-                                  Icons.arrow_forward,
-                                  color: AppColors.white,
-                                  size: 24,
+                      WidgetAnimator(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextWidget(
+                              text: 'Send Request',
+                              textStyle: TextStyle(
+                                color: _themeProvider.currentTheme !=
+                                        ThemeData.light()
+                                    ? AppColors.white
+                                    : AppColors.black,
+                                fontWeight: FontWeight.w800,
+                              ).largeStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _forgotPassword();
+                              },
+                              child: ClipOval(
+                                clipBehavior: Clip.hardEdge,
+                                child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.kSecondary),
+                                  child: Icon(
+                                    Icons.arrow_forward,
+                                    color: AppColors.white,
+                                    size: 24,
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -232,10 +235,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           top: -30,
           left: 0,
           right: 0,
-          child: Container(
-            width: double.infinity,
-            child: SvgPicture.asset(
-              "2".toSVG,
+          child: WidgetAnimator(
+            child: Container(
+              width: double.infinity,
+              child: SvgPicture.asset(
+                "2".toSVG,
+              ),
             ),
           ),
         ),

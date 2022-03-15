@@ -1,3 +1,4 @@
+import 'package:bookapp/core/components/animations/bottomAnimation.dart';
 import 'package:bookapp/core/components/clipper/custom_clipper.dart';
 import 'package:bookapp/core/components/loading/loading_widget.dart';
 import 'package:bookapp/core/components/textFormField/custom_text_form_field_widget.dart';
@@ -247,40 +248,42 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: context.highValue,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextWidget(
-                              text: 'Sign In',
-                              textStyle: TextStyle(
-                                color: _themeProvider.currentTheme !=
-                                        ThemeData.light()
-                                    ? AppColors.white
-                                    : AppColors.black,
-                                fontWeight: FontWeight.w800,
-                              ).largeStyle,
-                              textAlign: TextAlign.center,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _signIn();
-                              },
-                              child: ClipOval(
-                                clipBehavior: Clip.hardEdge,
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.kSecondary),
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: AppColors.white,
-                                    size: 24,
+                        WidgetAnimator(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextWidget(
+                                text: 'Sign In',
+                                textStyle: TextStyle(
+                                  color: _themeProvider.currentTheme !=
+                                          ThemeData.light()
+                                      ? AppColors.white
+                                      : AppColors.black,
+                                  fontWeight: FontWeight.w800,
+                                ).largeStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  _signIn();
+                                },
+                                child: ClipOval(
+                                  clipBehavior: Clip.hardEdge,
+                                  child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.kSecondary),
+                                    child: Icon(
+                                      Icons.arrow_forward,
+                                      color: AppColors.white,
+                                      size: 24,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -293,10 +296,12 @@ class _LoginPageState extends State<LoginPage> {
             top: -50,
             left: 0,
             right: 0,
-            child: Container(
-              width: double.infinity,
-              child: SvgPicture.asset(
-                "1".toSVG,
+            child: WidgetAnimator(
+              child: Container(
+                width: double.infinity,
+                child: SvgPicture.asset(
+                  "1".toSVG,
+                ),
               ),
             ),
           ),

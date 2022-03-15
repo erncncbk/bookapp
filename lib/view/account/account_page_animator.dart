@@ -2,6 +2,8 @@ import 'package:bookapp/view/account/account_page.dart';
 import 'package:flutter/material.dart';
 
 class AccountPageAnimator extends StatefulWidget {
+  const AccountPageAnimator({Key? key}) : super(key: key);
+
   @override
   _AccountPageAnimatorState createState() => _AccountPageAnimatorState();
 }
@@ -29,7 +31,7 @@ class _AccountPageAnimatorState extends State<AccountPageAnimator>
   @override
   Widget build(BuildContext context) {
     return AccountPage(
-      controller: _controller,
+      controller: _controller!,
     );
   }
 }

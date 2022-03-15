@@ -48,6 +48,14 @@ extension TextStyleExtension on TextStyle {
           height: 1.2,
           letterSpacing: 0.36,
           fontWeight: fontWeight ?? FontWeight.w400));
+  TextStyle get smallStyle2 => GoogleFonts.montserrat(
+      textStyle: TextStyle(
+          color: color ?? AppColors.black,
+          decoration: decoration ?? TextDecoration.none,
+          fontSize: 16,
+          height: 1.6,
+          letterSpacing: 2,
+          fontWeight: fontWeight ?? FontWeight.w400));
 
   TextStyle get normalStyle => GoogleFonts.montserrat(
       textStyle: TextStyle(

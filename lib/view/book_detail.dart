@@ -66,7 +66,6 @@ class _BookDetailState extends State<BookDetail> {
     // );
 
     return CustomScaffold(
-        height: 40,
         appbarWidget: _bookStateProvider?.getBookModel != null
             ? CustomAppBarTwo(
                 title: "Book Detail",

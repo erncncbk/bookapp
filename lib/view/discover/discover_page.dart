@@ -1,3 +1,4 @@
+import 'package:bookapp/core/components/animations/bottomAnimation.dart';
 import 'package:bookapp/core/components/appbar/custom_app_bar.dart';
 import 'package:bookapp/core/components/bottomnavbar/custom_bottom_navigation_bar.dart';
 import 'package:bookapp/core/components/scaffold/custom_scaffold.dart';
@@ -96,20 +97,22 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     path: NavigationConstants.discoverDetail, data: "xdxp");
               },
               // child: _bookCard(_bookStateProvider, _themeProvider, index),
-              child: Container(
-                padding: EdgeInsets.all(15),
+              child: WidgetAnimator(
                 child: Container(
-                  height: 130,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          Constant.discoverImages[index],
-                        ),
-                        fit: BoxFit.cover,
-                      )),
+                  padding: EdgeInsets.all(15),
+                  child: Container(
+                    height: 130,
+                    width: 130,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: AssetImage(
+                            Constant.discoverImages[index],
+                          ),
+                          fit: BoxFit.cover,
+                        )),
+                  ),
                 ),
               ),
             );
