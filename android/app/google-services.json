@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "276972422623",
+    "project_id": "bookapp-6f8f5",
+    "storage_bucket": "bookapp-6f8f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276972422623:android:8c2c831ea54a98dd1db06a",
+        "android_client_info": {
+          "package_name": "com.quicks.bookapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276972422623-jm29hfadeumvmvc56rbt59gnp9fde7lo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjw0tbNhVgKItL51birXTGAOhFqXNnhgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276972422623-jm29hfadeumvmvc56rbt59gnp9fde7lo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "276972422623-7esf0k2rf900kk340j36rfb58r3qkb5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.quicks.bookapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
