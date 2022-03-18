@@ -51,22 +51,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
       }),
       //Bookmarks Function
       (() {
-        print(Constant.titleList[2]);
+        print(Constant.titleList[3]);
         navigation.navigateToPage(path: NavigationConstants.bookmarks);
       }), //Authors Function
-      (() => {print(Constant.titleList[4])}),
-      //Campaigns Function
+      // (() => {print(Constant.titleList[4])}),
+      // //Campaigns Function
 
       (() {
-        print(Constant.titleList[5]);
+        print(Constant.titleList[4]);
         navigation.navigateToPage(path: NavigationConstants.campaignsPage);
       }),
       (() {
-        print(Constant.titleList[6]);
+        print(Constant.titleList[5]);
         navigation.navigateToPage(path: NavigationConstants.giftCardPage);
       }),
       (() {
-        print(Constant.titleList[7]);
+        print(Constant.titleList[6]);
         navigation.navigateToPage(path: NavigationConstants.settings);
       }),
     ];
@@ -85,12 +85,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ? _accountInfo(_themeProvider)
                     : Row(
                         children: [
-                          Icon(
-                            Icons.account_circle,
-                            size: 80,
-                          ),
-                          SizedBox(
-                            width: 20,
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Icon(
+                              Icons.account_circle,
+                              size: 100,
+                            ),
                           ),
                           InkWell(
                               onTap: (() => navigation.navigateToPage(
@@ -109,6 +109,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ))
                         ],
                       ),
+
                 // Container(
                 //   height: MediaQuery.of(context).size.height * 0.0875,
                 //   width: double.infinity,
@@ -227,9 +228,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
               .doc(_auth.currentUser!.uid)
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.data != null) {
-              Map<String, dynamic>? data =
-                  snapshot.data!.data() as Map<String, dynamic>?;
+            Map<String, dynamic>? data =
+                snapshot.data?.data() as Map<String, dynamic>?;
+            if (data != null && data['imageUrl'] != "") {
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -241,7 +242,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       // borderRadius: BorderRadius.circular(20),
                       child: ClipOval(
                         child: Image.network(
-                          data!['imageUrl'],
+                          data['imageUrl'],
                           fit: BoxFit.fill,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
@@ -316,26 +317,53 @@ class _CustomDrawerState extends State<CustomDrawer> {
             } else {
               return Row(
                 children: [
-                  Icon(
-                    Icons.account_circle,
-                    size: 60,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Icon(
+                      Icons.account_circle,
+                      size: 100,
+                    ),
                   ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  InkWell(
-                      child: TextWidget(
-                    text: "Login",
-                    textStyle: TextStyle(
-                            color:
-                                _themeProvider.currentTheme != ThemeData.light()
+                  Column(
+                    children: [
+                      Container(
+                        child: TextWidget(
+                          text: 'Hello ${data?['name'] ?? ""}',
+                          textStyle: TextStyle(
+                            color: AppColors.kPrimary,
+                            decoration: TextDecoration.none,
+                          ).extraSmallStyle,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          _fbAuthService!.signOut(context);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.logout,
+                              size: 20,
+                            ),
+                            TextWidget(
+                              text: "Sign Out",
+                              textStyle: TextStyle(
+                                color: _themeProvider.currentTheme !=
+                                        ThemeData.light()
                                     ? AppColors.white
                                     : AppColors.black,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.w600)
-                        .normalStyle,
-                    textAlign: TextAlign.left,
-                  ))
+                                decoration: TextDecoration.none,
+                              ).extraSmallStyle,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               );
             }

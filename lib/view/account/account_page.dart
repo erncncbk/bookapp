@@ -45,6 +45,8 @@ class _AccountPageState extends State<AccountPage> {
     int status = 1;
 
     var ref = _firebaseStorage.ref().child('images').child("$fileName.jpg");
+    _appStateProvider!.setIsProgressIndicatorVisible(true);
+
     print(ref);
     try {
       var uploadTask = await ref.putFile(imageFile!);
@@ -56,10 +58,12 @@ class _AccountPageState extends State<AccountPage> {
             .update({"imageUrl": imageUrl});
         print(imageUrl);
         print("image updated");
+        _appStateProvider!.setIsProgressIndicatorVisible(false);
       }
     } catch (error) {
       status = 0;
       print("image upload failed");
+      _appStateProvider!.setIsProgressIndicatorVisible(false);
 
       print(error);
     }
@@ -74,6 +78,7 @@ class _AccountPageState extends State<AccountPage> {
       if (xFile != null) {
         imageFile = File(xFile.path);
         _appStateProvider!.setImageFromFile(File(xFile.path));
+
         print("image picked");
         await uploadImage();
       } else {
@@ -95,6 +100,7 @@ class _AccountPageState extends State<AccountPage> {
     _appStateProvider = Provider.of<AppStateProvider>(context);
     final size = MediaQuery.of(context).size;
     return CustomScaffold(
+      isAsyncCall: _appStateProvider!.isProgressIndicatorVisible,
       appbarWidget: CustomAppBarTwo(
         title: "Account",
         actionWidget: HelperService.moreHoriz(),
@@ -190,8 +196,8 @@ class _AccountPageState extends State<AccountPage> {
 
   Positioned circle(Size size, double animationValue) {
     return Positioned(
-      top: 100,
-      left: size.width / 2 - 50,
+      top: 50,
+      left: size.width / 2 - 60,
       child: Transform(
         alignment: Alignment.center,
         transform: Matrix4.diagonal3Values(
@@ -207,7 +213,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               child: Icon(
                 Icons.account_circle,
-                size: 100,
+                size: 130,
               ),
             ),
             Positioned(
