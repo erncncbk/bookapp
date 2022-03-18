@@ -1,12 +1,13 @@
 import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
 import 'package:bookapp/core/init/provider/app_state/app_state_provider.dart';
 import 'package:bookapp/locator.dart';
-import 'package:bookapp/view/account/account_page.dart';
 import 'package:bookapp/view/account/account_page_animator.dart';
+import 'package:bookapp/view/account/fav/fav_page.dart';
 import 'package:bookapp/view/authentication/forgot_password_page.dart';
 import 'package:bookapp/view/authentication/login_page.dart';
 import 'package:bookapp/view/authentication/register_page.dart';
 import 'package:bookapp/view/book_detail.dart';
+import 'package:bookapp/view/bookmark/bookmark_page.dart';
 import 'package:bookapp/view/campaigns/campaigns_page.dart';
 import 'package:bookapp/view/discover/discover_page.dart';
 import 'package:bookapp/view/discover/discover_detail.dart';
@@ -14,7 +15,11 @@ import 'package:bookapp/view/gift/gift_card.dart';
 import 'package:bookapp/view/home_view.dart';
 import 'package:bookapp/view/notification/notification.dart';
 import 'package:bookapp/view/onboard_page/onboard_page.dart';
+import 'package:bookapp/view/order/order_page.dart';
 import 'package:bookapp/view/search_page/search_page.dart';
+import 'package:bookapp/view/settings/notification_options.dart';
+import 'package:bookapp/view/settings/settings.dart';
+import 'package:bookapp/view/shopping_cart/shopping_cart_page.dart';
 import 'package:bookapp/view/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +66,22 @@ class NavigationRoute {
         return normalNavigate(const CampaignsPage(), loginRequired: true);
       //GiftCard Page
       case NavigationConstants.giftCardPage:
-        return normalNavigate(const GiftCard(), loginRequired: true);
+        return normalNavigate(GiftCard(), loginRequired: true);
+      //Settings Page
+      case NavigationConstants.settings:
+        return normalNavigate(SettingsPage(), loginRequired: true);
+      //Notification Options
+      case NavigationConstants.notificationOptions:
+        return normalNavigate(NotificationOptions(), loginRequired: true);
+      //Favorites
+      case NavigationConstants.favorites:
+        return normalNavigate(const FavPage(), loginRequired: true);
+      //Shopping Cart
+      case NavigationConstants.shoppingCart:
+        return normalNavigate(const ShoppingCart(), loginRequired: true);
+      //Bookmarks
+      case NavigationConstants.bookmarks:
+        return normalNavigate(const BookmarkPage(), loginRequired: true);
       //Notification
       case NavigationConstants.notificationPage:
         return normalNavigate(const NotificationPage(), loginRequired: true);
@@ -74,6 +94,9 @@ class NavigationRoute {
       //Search Page
       case NavigationConstants.searchPage:
         return normalNavigate(const SearchPage(), fullScreenDialog: true);
+      //Orders Page
+      case NavigationConstants.orderPage:
+        return normalNavigate(const OrderPage(), fullScreenDialog: true);
       default:
         return MaterialPageRoute(builder: (context) => const SplashPage());
     }

@@ -15,6 +15,8 @@ class NavigationConstants {
   static const forgotPassword = '/forgotPassword';
   //Account Page
   static const accountPage = '/accountPage';
+  //Account Page
+  static const orderPage = '/orderPage';
   //Notification Page
   static const notificationPage = '/notificationPage';
   //Search Page
@@ -27,4 +29,14 @@ class NavigationConstants {
   static const campaignsPage = '/campaignsPage';
   //GiftCard Page
   static const giftCardPage = '/giftCardPage';
+  //Shopping Cart
+  static const shoppingCart = '/shoppingCart';
+  //Favorites
+  static const favorites = '/favorites';
+  //Bookmarks
+  static const bookmarks = '/bookmarks';
+  //Settings
+  static const settings = '/settings';
+  //NotificationOptions
+  static const notificationOptions = '/notificationOptions';
 }

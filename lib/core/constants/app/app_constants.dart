@@ -20,7 +20,7 @@ class Constant {
   static const String firstOpen = "FirstOpen";
   static const String theme = "Theme";
 
-  static const int TIMEOUTPERIOD = 20;
+  static const int TIMEOUTPERIOD = 30;
   static const int PICTURETIMEOUT = 150;
 
   static const images = [
@@ -70,6 +70,17 @@ class Constant {
     "Gift Cart",
     "Settings",
   ];
+  static const List<String> shopSectionList = [
+    "Add the product you are viewing to your cart.",
+    "Check your product information on the 'My Cart' page. Please update any fields you want to change.",
+    "Click the 'continue' button to make the payment.",
+    "Select your delivery and billing address. You can enter a different delivery address with the 'add new address' option.",
+    "When you click on the “Invoice comes with the product“ option, an invoice will be issued to your delivery address.",
+    "If an invoice will be issued to a different address and person/institution; You need to remove the tick. In this case, you can add new address information.",
+    "Click the Continue button and go to the “Payment” page and select the payment type.",
+    "After confirming the 'Distance Sales' and 'Pre-Information' acceptance agreements, complete your order with the 'buy' option.",
+  ];
+
   static const List<IconData> iconList = [
     Icons.account_circle_outlined,
     Icons.shopping_basket_outlined,

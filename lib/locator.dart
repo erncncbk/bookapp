@@ -12,7 +12,7 @@ GetIt locator = GetIt.instance;
 
 ///Projede kullanılan veya kullanılacak Service, Provider ve Repository'lerin
 ///proje başlatıldığında ayağa kaldırılmasını sağlar.
-void setupLocator() {
+void setupLocator() async {
   //*Providers
   locator.registerLazySingleton(() => AppStateProvider());
   locator.registerLazySingleton(() => BookStateProvider());

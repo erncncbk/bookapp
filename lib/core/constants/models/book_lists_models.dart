@@ -19,6 +19,8 @@ class BookListModel {
     this.price,
     this.currencyCode,
     this.author,
+    this.isFav = false,
+    this.isBookMark = false,
   });
 
   int? id;
@@ -27,6 +29,8 @@ class BookListModel {
   int? price;
   String? currencyCode;
   String? author;
+  bool? isFav;
+  bool? isBookMark;
 
   factory BookListModel.fromJson(Map<String, dynamic> json) => BookListModel(
         id: json["id"],
@@ -35,6 +39,8 @@ class BookListModel {
         price: json["price"],
         currencyCode: json["currencyCode"],
         author: json["author"],
+        isFav: false,
+        isBookMark: false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,5 +50,7 @@ class BookListModel {
         "price": price,
         "currencyCode": currencyCode,
         "author": author,
+        "isFav": isFav,
+        "isBookMark": isBookMark,
       };
 }

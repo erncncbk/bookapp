@@ -1,6 +1,5 @@
 import 'package:bookapp/core/components/alert/alert_dialog.dart';
 import 'package:bookapp/core/init/provider/app_state/app_state_provider.dart';
-import 'package:bookapp/core/init/provider/book_state.dart/book_state_provider.dart';
 import 'package:bookapp/core/init/services/storage_service.dart';
 import 'package:bookapp/locator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

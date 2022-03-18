@@ -10,7 +10,7 @@ void showAlertDialog(BuildContext context, String msg, VoidCallback? function) {
         return CupertinoAlertDialog(
           title: Text(
             msg,
-            style: TextStyle().extraSmallStyle,
+            style: TextStyle().ultraSmallStyle,
           ),
           actions: <Widget>[
             CupertinoDialogAction(
@@ -18,7 +18,7 @@ void showAlertDialog(BuildContext context, String msg, VoidCallback? function) {
               onPressed: function,
               child: Text(
                 "Ok",
-                style: TextStyle().extraSmallStyle,
+                style: TextStyle().ultraSmallStyle,
               ),
             )
           ],
@@ -36,7 +36,7 @@ void showAlertDialogNoButton(
         return CupertinoAlertDialog(
           title: Text(
             msg,
-            style: TextStyle().extraSmallStyle,
+            style: TextStyle().ultraSmallStyle,
           ),
         );
       });
@@ -66,7 +66,7 @@ void showAlertDialogWOptions(
             isDefaultAction: true,
             onPressed: function,
             child: Text(
-              title,
+              "OK",
               style: TextStyle(color: AppColors.kPrimary),
             ),
           ),

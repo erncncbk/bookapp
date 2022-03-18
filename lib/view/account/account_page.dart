@@ -4,9 +4,12 @@ import 'package:bookapp/core/components/appbar/custom_app_two.dart';
 import 'package:bookapp/core/components/scaffold/custom_scaffold.dart';
 import 'package:bookapp/core/components/text_widget.dart';
 import 'package:bookapp/core/constants/app/app_colors.dart';
+import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
 import 'package:bookapp/core/extensions/string_extension.dart';
+import 'package:bookapp/core/init/navigation/navigation_service.dart';
 import 'package:bookapp/core/init/notifier/theme_notifier.dart';
 import 'package:bookapp/core/init/provider/app_state/app_state_provider.dart';
+import 'package:bookapp/core/init/services/helper_service.dart';
 import 'package:bookapp/locator.dart';
 import 'package:bookapp/view/account/account_page_enter_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,26 +37,9 @@ class _AccountPageState extends State<AccountPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  NavigationService navigation = NavigationService.instance;
 
   File? imageFile;
-  // Future getImage({ImageSource imageSource = ImageSource.gallery}) async {
-  //   imageCache!.clear();
-  //   final picker = ImagePicker();
-  //   final pickedFile = await picker.pickImage(
-  //     source: imageSource,
-  //   );
-  //   // Navigator.pop(context);
-  //   if (pickedFile != null) {
-  //     print("image picked");
-  //     print(pickedFile.path);
-
-  //     // _productProvider
-  //     _appStateProvider!.setImageFromFile(File(pickedFile.path));
-  //   } else {
-  //     print('No image selected.');
-  //   }
-  // }
-
   Future uploadImage() async {
     String fileName = const Uuid().v1();
     int status = 1;
@@ -72,12 +58,6 @@ class _AccountPageState extends State<AccountPage> {
         print("image updated");
       }
     } catch (error) {
-      // await _firestore
-      //     .collection('chatroom')
-      //     .doc(widget.chatRoomId)
-      //     .collection('chats')
-      //     .doc(fileName)
-      //     .delete();
       status = 0;
       print("image upload failed");
 
@@ -117,7 +97,7 @@ class _AccountPageState extends State<AccountPage> {
     return CustomScaffold(
       appbarWidget: CustomAppBarTwo(
         title: "Account",
-        actionWidget: _actionWidget(),
+        actionWidget: HelperService.moreHoriz(),
       ),
       contentWidget: AnimatedBuilder(
         animation: widget.animation.controller,
@@ -131,12 +111,15 @@ class _AccountPageState extends State<AccountPage> {
   Widget _buildAnimation(BuildContext context, Size size,
       AppStateProvider _appStateProvider, ThemeNotifier _themeProvider) {
     return SizedBox(
-      child: StreamBuilder<QuerySnapshot>(
-          stream: _firestore.collection('users').snapshots(),
+      child: StreamBuilder<DocumentSnapshot>(
+          stream: _firestore
+              .collection('users')
+              .doc(_auth.currentUser!.uid)
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               Map<String, dynamic>? data =
-                  snapshot.data!.docs[0].data() as Map<String, dynamic>?;
+                  snapshot.data!.data() as Map<String, dynamic>?;
               return Column(
                 children: <Widget>[
                   SizedBox(
@@ -146,7 +129,10 @@ class _AccountPageState extends State<AccountPage> {
                       children: <Widget>[
                         topBar(
                             widget.animation.barHeight.value, _themeProvider),
-                        circle(size, widget.animation.avaterSize.value, data),
+                        data!["imageUrl"] != ""
+                            ? imgCircle(
+                                size, widget.animation.avaterSize.value, data)
+                            : circle(size, widget.animation.avaterSize.value),
                         // image()
                       ],
                     ),
@@ -160,7 +146,7 @@ class _AccountPageState extends State<AccountPage> {
                           opacity: widget.animation.titleOpacity.value,
                           // child: placeholderBox(28, 150, Alignment.centerLeft),
                           child: TextWidget(
-                            text: 'Hello ${data!['name']}',
+                            text: 'Hello ${data['name']}',
                             textStyle: TextStyle(
                               color: AppColors.kPrimary,
                               decoration: TextDecoration.none,
@@ -168,7 +154,7 @@ class _AccountPageState extends State<AccountPage> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(height: 50),
+                        SizedBox(height: 20),
                         Opacity(
                           opacity: widget.animation.textOpacity.value,
                           child: placeholderBox(350, double.infinity,
@@ -202,7 +188,50 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Positioned circle(
+  Positioned circle(Size size, double animationValue) {
+    return Positioned(
+      top: 100,
+      left: size.width / 2 - 50,
+      child: Transform(
+        alignment: Alignment.center,
+        transform: Matrix4.diagonal3Values(
+          animationValue,
+          animationValue,
+          1.0,
+        ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Icon(
+                Icons.account_circle,
+                size: 100,
+              ),
+            ),
+            Positioned(
+              right: 0,
+              top: 0,
+              child: GestureDetector(
+                child: Icon(
+                  Icons.add,
+                  color: AppColors.kPrimary,
+                  size: 40,
+                ),
+                onTap: () {
+                  print("aa");
+                  getImage();
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Positioned imgCircle(
       Size size, double animationValue, Map<String, dynamic>? data) {
     return Positioned(
       top: 50,
@@ -227,7 +256,6 @@ class _AccountPageState extends State<AccountPage> {
                     size: 40,
                   ),
                   onTap: () {
-                    print("aa");
                     getImage();
                   },
                 ),
@@ -276,170 +304,76 @@ class _AccountPageState extends State<AccountPage> {
     return Align(
       alignment: alignment,
       child: Container(
-        height: height,
         width: width,
+        height: height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: _themeProvider.currentTheme != ThemeData.light()
               ? AppColors.white.withOpacity(0.13)
               : AppColors.grey.withOpacity(0.13),
         ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _list('Orders', () {}, _themeProvider),
+              _list('Favorites', () {
+                navigation.navigateToPage(path: NavigationConstants.favorites);
+              }, _themeProvider),
+              _list('Bookmarks', () {
+                navigation.navigateToPage(path: NavigationConstants.bookmarks);
+              }, _themeProvider),
+              _list('Personal Informations', () {}, _themeProvider),
+              _list('Notifications', () {
+                navigation.navigateToPage(
+                    path: NavigationConstants.notificationPage);
+              }, _themeProvider),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _list(
+      String title, VoidCallback function, ThemeNotifier _themeProvider) {
+    return GestureDetector(
+      onTap: function,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextWidget(
-                        text: 'My Orders',
-                        textStyle: TextStyle(
-                          color:
-                              _themeProvider.currentTheme != ThemeData.light()
-                                  ? AppColors.white
-                                  : AppColors.black,
-                          decoration: TextDecoration.none,
-                        ).extraSmallStyle,
-                        textAlign: TextAlign.left,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      height: .5,
-                      color: _themeProvider.currentTheme != ThemeData.light()
-                          ? AppColors.white.withOpacity(0.13)
-                          : AppColors.grey.withOpacity(0.13),
-                    ),
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextWidget(
+                  text: title,
+                  textStyle: TextStyle(
+                    color: _themeProvider.currentTheme != ThemeData.light()
+                        ? AppColors.white
+                        : AppColors.black,
+                    decoration: TextDecoration.none,
+                  ).extraSmallStyle,
+                  textAlign: TextAlign.left,
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 20,
+                ),
+              ],
             ),
             Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextWidget(
-                        text: 'My Lists',
-                        textStyle: TextStyle(
-                          color:
-                              _themeProvider.currentTheme != ThemeData.light()
-                                  ? AppColors.white
-                                  : AppColors.black,
-                          decoration: TextDecoration.none,
-                        ).extraSmallStyle,
-                        textAlign: TextAlign.left,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      height: .5,
-                      color: _themeProvider.currentTheme != ThemeData.light()
-                          ? AppColors.white.withOpacity(0.13)
-                          : AppColors.grey.withOpacity(0.13),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextWidget(
-                        text: 'Personal Informations',
-                        textStyle: TextStyle(
-                          color:
-                              _themeProvider.currentTheme != ThemeData.light()
-                                  ? AppColors.white
-                                  : AppColors.black,
-                          decoration: TextDecoration.none,
-                        ).extraSmallStyle,
-                        textAlign: TextAlign.left,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      height: .5,
-                      color: _themeProvider.currentTheme != ThemeData.light()
-                          ? AppColors.white.withOpacity(0.13)
-                          : AppColors.grey.withOpacity(0.13),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextWidget(
-                        text: 'Notifications',
-                        textStyle: TextStyle(
-                          color:
-                              _themeProvider.currentTheme != ThemeData.light()
-                                  ? AppColors.white
-                                  : AppColors.black,
-                          decoration: TextDecoration.none,
-                        ).extraSmallStyle,
-                        textAlign: TextAlign.left,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      height: .5,
-                      color: _themeProvider.currentTheme != ThemeData.light()
-                          ? AppColors.white.withOpacity(0.13)
-                          : AppColors.grey.withOpacity(0.13),
-                    ),
-                  ),
-                ],
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: Divider(
+                height: .5,
+                color: _themeProvider.currentTheme != ThemeData.light()
+                    ? AppColors.white.withOpacity(0.13)
+                    : AppColors.grey.withOpacity(0.13),
               ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Widget _actionWidget() {
-    return IconButton(
-        icon: Icon(Icons.more_horiz),
-        onPressed: () => {print("xd")}).customIcon;
   }
 }

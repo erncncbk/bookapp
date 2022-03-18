@@ -4,6 +4,8 @@ import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
 import 'package:bookapp/core/extensions/string_extension.dart';
 import 'package:bookapp/core/init/navigation/navigation_service.dart';
 import 'package:bookapp/core/init/notifier/theme_notifier.dart';
+import 'package:bookapp/core/init/provider/book_state.dart/book_state_provider.dart';
+import 'package:bookapp/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +19,12 @@ class SearchContainer extends StatefulWidget {
 
 class _SearchContainerState extends State<SearchContainer> {
   NavigationService navigation = NavigationService.instance;
+  BookStateProvider? _bookStateProvider = locator<BookStateProvider>();
 
   @override
   Widget build(BuildContext context) {
+    _bookStateProvider = Provider.of<BookStateProvider>(context);
+
     final _themeProvider = Provider.of<ThemeNotifier>(context);
     Color themeColor = _themeProvider.currentTheme != ThemeData.light()
         ? AppColors.white
@@ -81,21 +86,18 @@ class _SearchContainerState extends State<SearchContainer> {
                           String barcodeScanRes =
                               await FlutterBarcodeScanner.scanBarcode(
                                   "#ff6666", "Cancel", false, ScanMode.DEFAULT);
-                          print(barcodeScanRes.toString());
+                          _bookStateProvider!.checkBarcodExist(
+                            barcodeScanRes.toString(),
+                          );
+                          if (_bookStateProvider!.getIsBarcodExist) {
+                            if (_bookStateProvider!.getSelectedBookId != null) {
+                              navigation.navigateToPage(
+                                  path: NavigationConstants.bookDetail);
+                            }
+                            print(barcodeScanRes.toString());
+                          }
                         },
                       ),
-                      // GestureDetector(
-                      //   child: Icon(
-                      //     Icons.settings_overscan_rounded,
-                      //     size: 26,
-                      //   ),
-                      //   onTap: () async {
-                      //     String barcodeScanRes =
-                      //         await FlutterBarcodeScanner.scanBarcode(
-                      //             "#ff6666", "Cancel", false, ScanMode.DEFAULT);
-                      //     print(barcodeScanRes.toString());
-                      //   },
-                      // ),
                     ],
                   ),
                 )

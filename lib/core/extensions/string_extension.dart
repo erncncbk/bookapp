@@ -25,13 +25,21 @@ extension TextStyleExtension on TextStyle {
   TextStyle get ultraSmallStyle => GoogleFonts.montserrat(
       textStyle: TextStyle(
           color: _themeProvider!.currentTheme != ThemeData.light()
-              ? AppColors.white
-              : AppColors.black,
+              ? AppColors.black
+              : AppColors.white,
           decoration: decoration ?? TextDecoration.none,
           fontSize: 10,
           height: 1.6,
           letterSpacing: 1.3,
           fontWeight: fontWeight ?? FontWeight.w600));
+  TextStyle get extraSmallStyle2 => GoogleFonts.montserrat(
+      textStyle: TextStyle(
+          color: color ?? AppColors.black,
+          decoration: decoration ?? TextDecoration.none,
+          fontSize: 8,
+          height: 1.2,
+          letterSpacing: .3,
+          fontWeight: fontWeight ?? FontWeight.w400));
   TextStyle get extraSmallStyle => GoogleFonts.montserrat(
       textStyle: TextStyle(
           color: color ?? AppColors.black,

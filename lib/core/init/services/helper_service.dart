@@ -1,3 +1,4 @@
+import 'package:bookapp/core/components/text_widget.dart';
 import 'package:bookapp/core/constants/app/app_colors.dart';
 import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
 import 'package:bookapp/core/extensions/string_extension.dart';
@@ -57,5 +58,67 @@ class HelperService {
             path: NavigationConstants.notificationPage,
           );
         });
+  }
+
+  ///Widget like that. | - | 1  | + |
+  ///provide initial value, and functions.
+  ///title, hideable and changeable
+  ///Padding size is optional
+  static Widget quantityWidget(
+      int value, VoidCallback? increaseFunc, VoidCallback? decreaseFunc,
+      {String title = "Quantity",
+      bool isTitle = true,
+      double buttonPaddingSize = 10}) {
+    return FittedBox(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Visibility(visible: isTitle, child: Text(title)),
+          Row(children: [
+            HelperService.iconButtonWidget(Icons.remove, decreaseFunc),
+            Container(
+                padding: EdgeInsets.only(
+                    left: buttonPaddingSize, right: buttonPaddingSize),
+                child: TextWidget(
+                  text: value.toString(),
+                  textAlign: TextAlign.left,
+                )),
+            HelperService.iconButtonWidget(Icons.add, increaseFunc),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  /// icon button widget that has white container and shadow
+  /// provide icon and function
+  static Widget iconButtonWidget(IconData iconData, VoidCallback? onpress) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(4),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 3,
+              blurRadius: 3,
+              offset: Offset(0, 3),
+            )
+          ]),
+      child: IconButton(
+        icon: Icon(
+          iconData,
+          color: AppColors.kPrimary,
+        ),
+        onPressed: onpress!,
+      ),
+    );
+  }
+
+  static Widget moreHoriz() {
+    return IconButton(
+        icon: Icon(Icons.more_horiz),
+        onPressed: () => {print("more")}).customIcon;
   }
 }

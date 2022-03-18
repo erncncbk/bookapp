@@ -43,8 +43,8 @@ class _BooksCardState extends State<BooksCard> {
           height: widget.height,
           width: widget.width,
           padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.023,
-              right: MediaQuery.of(context).size.width * 0.023),
+              left: MediaQuery.of(context).size.width * 0.033,
+              right: MediaQuery.of(context).size.width * 0.033),
           child: Card(
             elevation: 5,
             shape: RoundedRectangleBorder(
@@ -79,17 +79,20 @@ class _BooksCardState extends State<BooksCard> {
                     height: MediaQuery.of(context).size.width * 0.02,
                   ),
                   Expanded(
-                    child: TextWidget(
-                      text: widget.title,
-                      textStyle: TextStyle(
-                              color: _themeProvider.currentTheme !=
-                                      ThemeData.light()
-                                  ? AppColors.white
-                                  : AppColors.black,
-                              decoration: TextDecoration.none,
-                              overflow: TextOverflow.ellipsis)
-                          .smallStyle,
-                      textAlign: TextAlign.center,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: TextWidget(
+                        text: widget.title,
+                        textStyle: TextStyle(
+                                color: _themeProvider.currentTheme !=
+                                        ThemeData.light()
+                                    ? AppColors.white
+                                    : AppColors.black,
+                                decoration: TextDecoration.none,
+                                overflow: TextOverflow.ellipsis)
+                            .smallStyle,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ],
@@ -100,15 +103,14 @@ class _BooksCardState extends State<BooksCard> {
         Positioned(
             bottom: 10,
             left: 30,
+            right: 30,
             child: TextWidget(
               text: '${widget.price} ${widget.currencyCode}',
               textStyle: TextStyle(
-                color: _themeProvider.currentTheme != ThemeData.light()
-                    ? AppColors.white
-                    : AppColors.black,
+                color: AppColors.kPrimary,
                 decoration: TextDecoration.none,
-              ).smallStyle,
-              textAlign: TextAlign.right,
+              ).extraSmallStyle,
+              textAlign: TextAlign.center,
             )),
       ],
     );

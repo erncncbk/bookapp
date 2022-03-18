@@ -124,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   )),
               GestureDetector(
                 onTap: () {
-                  navigation.navigateToPage(
+                  navigation.navigateToPageClear(
                     path: NavigationConstants.loginPage,
                   );
                 },
@@ -171,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     clipper: MyClipper2(),
                     child: Container(
                       height: 150,
-                      decoration: BoxDecoration(color: AppColors.kPrimary),
+                      decoration: BoxDecoration(color: AppColors.kSecondary),
                     ),
                   ),
                 ],
@@ -284,14 +284,38 @@ class _RegisterPageState extends State<RegisterPage> {
             ],
           ),
           Positioned(
-            top: -30,
+            top: -50,
             left: 0,
             right: 0,
             child: WidgetAnimator(
               child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 40),
                 width: double.infinity,
                 child: SvgPicture.asset(
                   "3".toSVG,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 50,
+            left: 20,
+            child: GestureDetector(
+              onTap: () {
+                navigation.navigateToPageClear(
+                    path: NavigationConstants.homeView);
+              },
+              child: ClipOval(
+                clipBehavior: Clip.hardEdge,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(color: AppColors.kPrimary),
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.white,
+                    size: 24,
+                  ),
                 ),
               ),
             ),

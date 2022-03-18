@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bookapp/core/components/text_widget.dart';
 import 'package:bookapp/core/constants/app/app_colors.dart';
 import 'package:bookapp/core/constants/app/app_constants.dart';
@@ -12,8 +10,8 @@ import 'package:bookapp/core/init/provider/app_state/app_state_provider.dart';
 import 'package:bookapp/core/init/services/fb_auth_service.dart';
 import 'package:bookapp/locator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -28,6 +26,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   NavigationService navigation = NavigationService.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final AppStateProvider? _appStateProvider = locator<AppStateProvider>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isSwitched = false;
   @override
@@ -41,15 +40,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
         navigation.navigateToPage(path: NavigationConstants.accountPage);
       }),
       //Orders Function
-      (() => {print(Constant.titleList[1])}),
+      (() {
+        print(Constant.titleList[1]);
+        navigation.navigateToPage(path: NavigationConstants.orderPage);
+      }),
       //What Should I Read Function
       (() {
         print(Constant.titleList[2]);
-        navigation.navigateToPage(path: NavigationConstants.discoverPage);
+        navigation.navigateToPage(path: NavigationConstants.discoverDetail);
       }),
       //Bookmarks Function
-      (() => {print(Constant.titleList[3])}),
-      //Authors Function
+      (() {
+        print(Constant.titleList[2]);
+        navigation.navigateToPage(path: NavigationConstants.bookmarks);
+      }), //Authors Function
       (() => {print(Constant.titleList[4])}),
       //Campaigns Function
 
@@ -61,7 +65,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
         print(Constant.titleList[6]);
         navigation.navigateToPage(path: NavigationConstants.giftCardPage);
       }),
-      (() => {print(Constant.titleList[7])}),
+      (() {
+        print(Constant.titleList[7]);
+        navigation.navigateToPage(path: NavigationConstants.settings);
+      }),
     ];
 
     return Drawer(
@@ -214,12 +221,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Widget _accountInfo(ThemeNotifier _themeProvider) {
     return Container(
-      child: StreamBuilder<QuerySnapshot>(
-          stream: _firestore.collection('users').snapshots(),
+      child: StreamBuilder<DocumentSnapshot>(
+          stream: _firestore
+              .collection('users')
+              .doc(_auth.currentUser!.uid)
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               Map<String, dynamic>? data =
-                  snapshot.data!.docs[0].data() as Map<String, dynamic>?;
+                  snapshot.data!.data() as Map<String, dynamic>?;
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -237,6 +247,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) return child;
                             return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              transformAlignment: Alignment.center,
                               width: 90.0,
                               height: 90.0,
                               alignment: Alignment.centerLeft,
@@ -277,15 +289,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           Navigator.pop(context);
                           _fbAuthService!.signOut(context);
                         },
-                        child: TextWidget(
-                          text: "Sign Out",
-                          textStyle: TextStyle(
-                            color:
-                                _themeProvider.currentTheme != ThemeData.light()
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.logout,
+                              size: 20,
+                            ),
+                            TextWidget(
+                              text: "Sign Out",
+                              textStyle: TextStyle(
+                                color: _themeProvider.currentTheme !=
+                                        ThemeData.light()
                                     ? AppColors.white
                                     : AppColors.black,
-                            decoration: TextDecoration.none,
-                          ).extraSmallStyle,
+                                decoration: TextDecoration.none,
+                              ).extraSmallStyle,
+                            ),
+                          ],
                         ),
                       )
                     ],

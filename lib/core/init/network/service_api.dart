@@ -8,6 +8,8 @@ import 'package:bookapp/core/constants/app/app_constants.dart';
 import 'package:bookapp/core/constants/enums/alert_type_enum.dart';
 import 'package:bookapp/core/constants/enums/base_model.dart';
 import 'package:bookapp/core/constants/enums/http_request_enum.dart';
+import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
+import 'package:bookapp/core/init/navigation/navigation_service.dart';
 import 'package:bookapp/core/init/provider/app_state/app_state_provider.dart';
 import 'package:bookapp/locator.dart';
 import 'package:flutter/services.dart';
@@ -98,7 +100,10 @@ class RequestHelper {
       } else {
         var jsonbody = jsonDecode(response.body);
 
+        /// Unexpected Route
+        NavigationService navigation = NavigationService.instance;
         _appStateProvider.setErrorMessage(jsonbody["message"]);
+        navigation.navigateToPage(path: NavigationConstants.homeView);
         return null;
       }
     } on TimeoutException catch (e) {

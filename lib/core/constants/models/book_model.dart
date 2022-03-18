@@ -9,15 +9,17 @@ BookModel bookModelFromJson(String str) => BookModel.fromJson(json.decode(str));
 String bookModelToJson(BookModel data) => json.encode(data.toJson());
 
 class BookModel {
-  BookModel(
-      {this.id,
-      this.title,
-      this.isbn,
-      this.description,
-      this.price,
-      this.currencyCode,
-      this.author,
-      this.isBookMark = false});
+  BookModel({
+    this.id,
+    this.title,
+    this.isbn,
+    this.description,
+    this.price,
+    this.currencyCode,
+    this.author,
+    this.isBookMark = false,
+    this.isFav = false,
+  });
 
   int? id;
   String? title;
@@ -26,7 +28,8 @@ class BookModel {
   int? price;
   String? currencyCode;
   String? author;
-  bool? isBookMark;
+  bool isBookMark;
+  bool? isFav;
 
   factory BookModel.fromJson(Map<String, dynamic> json) => BookModel(
         id: json["id"],
@@ -36,7 +39,8 @@ class BookModel {
         price: json["price"],
         currencyCode: json["currencyCode"],
         author: json["author"],
-        isBookMark: false,
+        // isBookMark: false,
+        isFav: false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +51,7 @@ class BookModel {
         "price": price,
         "currencyCode": currencyCode,
         "author": author,
-        "isBookMark": isBookMark
+        "isBookMark": isBookMark,
+        "isFav": false,
       };
 }

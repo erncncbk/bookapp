@@ -25,6 +25,7 @@ class CustomTextFormFieldWidget extends StatefulWidget {
       this.maxLine = 1,
       this.minLine = 1,
       this.hintText = "",
+      this.radius = 20,
       this.onTap})
       : super(key: key);
   final AutovalidateMode? autovalidateMode;
@@ -46,6 +47,7 @@ class CustomTextFormFieldWidget extends StatefulWidget {
   final int? minLine;
   final String? hintText;
   final VoidCallback? onTap;
+  final double radius;
 
   @override
   _CustomTextFormFieldWidgetState createState() =>
@@ -96,26 +98,26 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
       errorStyle: TextStyle(color: AppColors.red).extraSmallStyle,
       errorMaxLines: 3,
       focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide(color: AppColors.red, width: 1.0)),
       errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide(color: AppColors.red, width: 1.0)),
       enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide(
               color: _themeProvider.currentTheme != ThemeData.light()
                   ? AppColors.white
                   : AppColors.black,
               width: 1.0)),
       focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide(color: Colors.grey, width: 2.0)),
       hintText: widget.hintText!,
       isDense: true,
       hintStyle: TextStyle(color: AppColors.kSecondary).smallStyle,
       border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide(color: AppColors.grey, width: 1.0)),
     );
   }

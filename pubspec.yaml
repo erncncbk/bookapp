@@ -25,6 +25,8 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   image_picker: ^0.8.4+11
   uuid: ^3.0.5
+  flutter_rating_bar: ^4.0.0
+  share_plus: ^4.0.1
 
 
   # #Firebase 

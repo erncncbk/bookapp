@@ -2,9 +2,6 @@ import 'package:bookapp/core/components/animations/bottomAnimation.dart';
 import 'package:bookapp/core/components/appbar/custom_app_bar.dart';
 import 'package:bookapp/core/components/bottomnavbar/custom_bottom_navigation_bar.dart';
 import 'package:bookapp/core/components/scaffold/custom_scaffold.dart';
-import 'package:bookapp/core/components/search/search_bar.dart';
-import 'package:bookapp/core/components/search/search_container.dart';
-import 'package:bookapp/core/constants/app/app_colors.dart';
 import 'package:bookapp/core/constants/app/app_constants.dart';
 import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
 import 'package:bookapp/core/init/navigation/navigation_service.dart';
@@ -12,7 +9,6 @@ import 'package:bookapp/core/init/notifier/theme_notifier.dart';
 import 'package:bookapp/core/init/provider/book_state.dart/book_state_provider.dart';
 import 'package:bookapp/locator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/init/provider/app_state/app_state_provider.dart';
@@ -32,19 +28,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   Widget build(BuildContext context) {
     _bookStateProvider = Provider.of<BookStateProvider>(context);
+    AppStateProvider appStateProvider = Provider.of<AppStateProvider>(context);
+    appStateProvider.setSelectedBottomIndex(1, isNotifier: false);
     final _themeProvider = Provider.of<ThemeNotifier>(context);
-    // return Scaffold(
-    //   backgroundColor: _themeProvider.currentTheme == ThemeData.light()
-    //       ? AppColors.white
-    //       : AppColors.black,
-    //   body: SafeArea(
-    //     child: _body(_bookStateProvider!, _themeProvider),
-    //   ),
-    //   bottomNavigationBar:
-    //       _bookStateProvider?.getBookListModel?.isNotEmpty ?? false
-    //           ? CustomBottomNavigationBar()
-    //           : SizedBox(),
-    // );
     return CustomScaffold(
         appbarWidget: _bookStateProvider?.getBookListModel?.isNotEmpty ?? false
             ? CustomAppBar(

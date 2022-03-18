@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                   )),
               GestureDetector(
                 onTap: () {
-                  navigation.navigateToPage(
+                  navigation.navigateToPageClear(
                     path: NavigationConstants.registerPage,
                   );
                 },
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                   )),
               GestureDetector(
                 onTap: () {
-                  navigation.navigateToPage(
+                  navigation.navigateToPageClear(
                       path: NavigationConstants.forgotPassword);
                 },
                 child: TextWidget(
@@ -298,9 +298,33 @@ class _LoginPageState extends State<LoginPage> {
             right: 0,
             child: WidgetAnimator(
               child: Container(
+                padding: EdgeInsets.all(20),
                 width: double.infinity,
                 child: SvgPicture.asset(
                   "1".toSVG,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 50,
+            left: 20,
+            child: GestureDetector(
+              onTap: () {
+                navigation.navigateToPageClear(
+                    path: NavigationConstants.homeView);
+              },
+              child: ClipOval(
+                clipBehavior: Clip.hardEdge,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(color: AppColors.kPrimary),
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.white,
+                    size: 24,
+                  ),
                 ),
               ),
             ),

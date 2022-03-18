@@ -37,19 +37,9 @@ class _HomeViewState extends State<HomeView> {
   NavigationService navigation = NavigationService.instance;
   final HelperService? _helperService = locator<HelperService>();
 
-  final ScrollController? _scrollController =
-      ScrollController(initialScrollOffset: 0);
-
-  _scrollListener() {
-    _bookStateProvider!.setScrollPosition(_scrollController!.position.pixels);
-  }
-
   var num = 1;
   @override
   void initState() {
-    // getListTherapistClientMatch();
-    _scrollController?.addListener(_scrollListener);
-
     main();
 
     super.initState();
@@ -80,23 +70,24 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     _bookStateProvider = Provider.of<BookStateProvider>(context);
+    AppStateProvider appStateProvider = Provider.of<AppStateProvider>(context);
+    appStateProvider.setSelectedBottomIndex(0, isNotifier: false);
     final _themeProvider = Provider.of<ThemeNotifier>(context);
 
     return CustomScaffold(
-        appbarWidget: _bookStateProvider?.getBookListModel?.isNotEmpty ?? false
+        appbarWidget: _bookStateProvider!.getBookListModel != null
             ? CustomAppBar(
                 title: "Home",
                 actionWidget: _helperService!.actionWidget(_themeProvider),
               )
             : SizedBox(),
-        contentWidget: _bookStateProvider?.getBookListModel?.isNotEmpty ?? false
+        contentWidget: _bookStateProvider!.getBookListModel != null
             ? _body(_bookStateProvider!, _themeProvider)
             : SizedBox(),
         isAsyncCall: _appStateProvider!.isProgressIndicatorVisible,
-        bottomNavigatorBar:
-            _bookStateProvider?.getBookListModel?.isNotEmpty ?? false
-                ? CustomBottomNavigationBar()
-                : SizedBox(),
+        bottomNavigatorBar: _bookStateProvider!.getBookListModel != null
+            ? CustomBottomNavigationBar()
+            : SizedBox(),
         context: context);
     // return ModalProgressHUD(
     //   inAsyncCall: _appStateProvider!.isProgressIndicatorVisible!,
@@ -119,10 +110,8 @@ class _HomeViewState extends State<HomeView> {
                 child: SingleChildScrollView(
                   child: Column(children: [
                     Container(
-                      height: 160,
-                      child: CustomCarouselCard(
-                        bookList: _bookStateProvider.getBookListModel,
-                      ),
+                      height: 140,
+                      child: CustomCarouselCard(),
                     ),
                     _selectedBooks(_bookStateProvider, _themeProvider),
                     __horizontalBookList(_bookStateProvider, _themeProvider),
@@ -136,87 +125,93 @@ class _HomeViewState extends State<HomeView> {
   Widget _selectedBooks(
       BookStateProvider _bookStateProvider, ThemeNotifier _themeProvider) {
     return WidgetAnimator(
-      child: Container(
-        padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width * 0.047,
-            right: MediaQuery.of(context).size.width * 0.047),
-        child: Card(
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20), // if you need this
-            side: BorderSide(
-              color: Colors.grey.withOpacity(0.2),
-              width: 3,
+      child: GestureDetector(
+        onTap: () {
+          _goBookDetail(_bookStateProvider, (num - 1));
+        },
+        child: Container(
+          padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * 0.047,
+              right: MediaQuery.of(context).size.width * 0.047),
+          child: Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), // if you need this
+              side: BorderSide(
+                color: Colors.grey.withOpacity(0.2),
+                width: 3,
+              ),
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.047),
-            child: Row(
-              children: [
-                Container(
-                  width: 100,
-                  height: 150,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/$num.png",
-                        ),
-                        fit: BoxFit.contain,
-                      )),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.025,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextWidget(
-                        text: "Editor's Pick",
-                        textStyle: TextStyle(
-                          color: AppColors.kPrimary,
-                          decoration: TextDecoration.none,
-                        ).largeStyle,
-                        textAlign: TextAlign.right,
-                      ),
-                      TextWidget(
-                        text: _bookStateProvider
-                                .getBookListModel?[num - 1].title
-                                .toString() ??
-                            "",
-                        textStyle: TextStyle(
-                          color:
-                              _themeProvider.currentTheme != ThemeData.light()
-                                  ? AppColors.white
-                                  : AppColors.black,
-                          decoration: TextDecoration.none,
-                        ).normalStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      TextWidget(
-                        text:
-                            "by ${_bookStateProvider.getBookListModel?[num - 1].author ?? ""}",
-                        textStyle: TextStyle(
-                          color: AppColors.kPrimary,
-                          decoration: TextDecoration.none,
-                        ).extraSmallStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(top: 5),
-                      //   child: GeneralButtonWidget(
-                      //     btnText: LocaleKeys.button_make_book,
-                      //     radius: 28,
-                      //     width: MediaQuery.of(context).size.width / 2.5,
-                      //     btnFunction: this.widget.btnFunction,
-                      //   ),
-                      // )
-                    ],
+            child: Padding(
+              padding:
+                  EdgeInsets.all(MediaQuery.of(context).size.width * 0.047),
+              child: Row(
+                children: [
+                  Container(
+                    width: 100,
+                    height: 150,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(5),
+                        image: DecorationImage(
+                          image: AssetImage(
+                            "assets/images/$num.png",
+                          ),
+                          fit: BoxFit.contain,
+                        )),
                   ),
-                )
-              ],
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.025,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextWidget(
+                          text: "Editor's Pick",
+                          textStyle: TextStyle(
+                            color: AppColors.kPrimary,
+                            decoration: TextDecoration.none,
+                          ).largeStyle,
+                          textAlign: TextAlign.right,
+                        ),
+                        TextWidget(
+                          text: _bookStateProvider
+                                  .getBookListModel?[num - 1].title
+                                  .toString() ??
+                              "",
+                          textStyle: TextStyle(
+                            color:
+                                _themeProvider.currentTheme != ThemeData.light()
+                                    ? AppColors.white
+                                    : AppColors.black,
+                            decoration: TextDecoration.none,
+                          ).normalStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                        TextWidget(
+                          text:
+                              "by ${_bookStateProvider.getBookListModel?[num - 1].author ?? ""}",
+                          textStyle: TextStyle(
+                            color: AppColors.kPrimary,
+                            decoration: TextDecoration.none,
+                          ).extraSmallStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(top: 5),
+                        //   child: GeneralButtonWidget(
+                        //     btnText: LocaleKeys.button_make_book,
+                        //     radius: 28,
+                        //     width: MediaQuery.of(context).size.width / 2.5,
+                        //     btnFunction: this.widget.btnFunction,
+                        //   ),
+                        // )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -306,19 +301,15 @@ class _HomeViewState extends State<HomeView> {
       BookStateProvider _bookStateProvider, ThemeNotifier _themeProvider) {
     return Container(
       height: 300,
+      width: double.infinity,
       child: ListView.builder(
-        controller: _scrollController,
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         itemCount: _bookStateProvider.getBookListModel?.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
               onTap: () {
-                _bookStateProvider.setSelectedBookId(
-                    _bookStateProvider.getBookListModel![index].id);
-                navigation.navigateToPage(
-                  path: NavigationConstants.bookDetail,
-                );
+                _goBookDetail(_bookStateProvider, index);
               },
               // child: _bookCard(_bookStateProvider, _themeProvider, index)
               child: BooksCard(
@@ -333,6 +324,14 @@ class _HomeViewState extends State<HomeView> {
               ));
         },
       ),
+    );
+  }
+
+  _goBookDetail(_bookStateProvider, index) {
+    _bookStateProvider
+        .setSelectedBookId(_bookStateProvider.getBookListModel![index].id);
+    navigation.navigateToPage(
+      path: NavigationConstants.bookDetail,
     );
   }
 }
