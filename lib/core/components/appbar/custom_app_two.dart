@@ -26,6 +26,7 @@ class _CustomAppBarTwoState extends State<CustomAppBarTwo> {
     return PreferredSize(
         preferredSize: Size.fromHeight(0),
         child: AppBar(
+          elevation: 0,
           iconTheme: IconThemeData(
               color: _themeProvider.currentTheme != ThemeData.light()
                   ? AppColors.white

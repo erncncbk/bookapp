@@ -41,6 +41,7 @@ class _NotEmptyCartState extends State<NotEmptyCart> {
   Widget _notEmptyCart(
       BookStateProvider _bookStateProvider, ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,7 +376,10 @@ class _NotEmptyCartState extends State<NotEmptyCart> {
                 btnColor: AppColors.kPrimary,
                 btnFunction: () {
                   showAlertDialogWOptions(
-                      context, "Oooooo", "Do you want to add buy items", () {
+                      context,
+                      "${_bookStateProvider.getCartBookMap.length} item selected",
+                      "Are you sure you want to buy selected ${_bookStateProvider.getCartBookMap.length > 1 ? 'items' : 'item'}",
+                      () {
                     _bookStateProvider
                         .addToOrderList(_bookStateProvider.getCartBookMap);
                     Navigator.pop(context);

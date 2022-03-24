@@ -170,7 +170,7 @@ class _SearchPageState extends State<SearchPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         image: DecorationImage(
                                           image: AssetImage(
-                                            Constant.book_images[index],
+                                            "assets/images/${int.parse(_bookStateProvider.getSearchedBooks![index].id.toString().replaceAll('0', ""))}.png",
                                           ),
                                           fit: BoxFit.cover,
                                         )),

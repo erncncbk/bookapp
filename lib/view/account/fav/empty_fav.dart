@@ -29,6 +29,7 @@ class _EmptyFavState extends State<EmptyFav> {
 
   Widget _emptyFav(ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: WidgetAnimator(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

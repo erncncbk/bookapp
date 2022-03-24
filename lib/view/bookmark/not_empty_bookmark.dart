@@ -189,6 +189,7 @@ class _NotEmptyBookmarkState extends State<NotEmptyBookmark> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

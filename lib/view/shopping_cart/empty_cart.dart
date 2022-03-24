@@ -30,6 +30,7 @@ class _EmptyCartState extends State<EmptyCart> {
 
   Widget _emptyCart(ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: WidgetAnimator(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

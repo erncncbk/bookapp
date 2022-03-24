@@ -161,6 +161,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: Form(
                   key: formKey,
                   child: Column(

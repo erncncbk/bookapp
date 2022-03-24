@@ -1,3 +1,5 @@
+import 'package:another_flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:bookapp/core/components/text_widget.dart';
 import 'package:bookapp/core/constants/app/app_colors.dart';
 import 'package:bookapp/core/constants/navigation/navigation_constants.dart';
@@ -114,6 +116,13 @@ class HelperService {
         onPressed: onpress!,
       ),
     );
+  }
+
+  static void showflushbar(BuildContext context,
+      {String title = "", String message = ""}) {
+    FlushbarHelper.createInformation(
+            title: title, message: message, duration: Duration(seconds: 13))
+        .show(context);
   }
 
   static Widget moreHoriz() {

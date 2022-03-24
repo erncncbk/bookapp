@@ -170,6 +170,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _body(ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Stack(
         children: [
           Column(
@@ -203,6 +204,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Form(
                     key: formKey,
                     child: Column(

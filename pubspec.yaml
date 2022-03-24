@@ -1,5 +1,5 @@
 name: bookapp
-description: A new Flutter project.
+description: Book Store.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -27,6 +27,7 @@ dependencies:
   uuid: ^3.0.5
   flutter_rating_bar: ^4.0.0
   share_plus: ^4.0.1
+  another_flushbar: ^1.10.28
 
 
   # #Firebase 
@@ -54,10 +55,6 @@ flutter:
     - assets/images/
 
   fonts:
-  - family: Agustina
-    fonts:
-      - asset: assets/fonts/agustina.otf
-
   - family: Montserrat
     fonts:
       - asset: assets/fonts/montserrat.ttf

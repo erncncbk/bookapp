@@ -31,6 +31,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return PreferredSize(
         preferredSize: Size.fromHeight(0),
         child: AppBar(
+          elevation: 0,
           iconTheme: IconThemeData(
               color: _themeProvider.currentTheme != ThemeData.light()
                   ? AppColors.white

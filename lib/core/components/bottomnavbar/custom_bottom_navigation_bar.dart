@@ -45,6 +45,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           child: SingleChildScrollView(
             physics: NeverScrollableScrollPhysics(),
             child: BottomNavigationBar(
+                elevation: 0,
                 backgroundColor:
                     _themeProvider.currentTheme != ThemeData.light()
                         ? AppColors.white.withOpacity(0.13)

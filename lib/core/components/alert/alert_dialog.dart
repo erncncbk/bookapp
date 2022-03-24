@@ -57,8 +57,8 @@ void showAlertDialogWOptions(
               Navigator.pop(context);
             },
             child: Text(
-              "Cancel",
-              style: TextStyle(color: AppColors.kSecondary),
+              "No",
+              style: TextStyle(color: AppColors.kPrimary),
             ),
           ),
           CupertinoDialogAction(
@@ -66,8 +66,8 @@ void showAlertDialogWOptions(
             isDefaultAction: true,
             onPressed: function,
             child: Text(
-              "OK",
-              style: TextStyle(color: AppColors.kPrimary),
+              "Yes",
+              style: TextStyle(color: AppColors.kSecondary),
             ),
           ),
         ],

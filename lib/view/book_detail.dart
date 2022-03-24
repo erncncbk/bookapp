@@ -57,10 +57,9 @@ class _BookDetailState extends State<BookDetail> {
 
   Future getBookAsync() async {
     await _processService!.getRepositoryAsync(
-        context: context,
-        function: () async => await _bookStateProvider!.getBook(),
-        setLoader: true,
-        isNotifier: false);
+      context: context,
+      function: () async => await _bookStateProvider!.getBook(),
+    );
   }
 
   @override
@@ -363,6 +362,7 @@ class _BookDetailState extends State<BookDetail> {
         radius: Radius.circular(50),
         isAlwaysShown: true,
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Container(
             alignment: Alignment.bottomCenter,
             padding: EdgeInsets.all(16),

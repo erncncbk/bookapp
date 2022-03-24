@@ -146,6 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _body(ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Stack(
         children: [
           Column(
@@ -179,6 +180,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Form(
                     key: formKey,
                     child: Column(

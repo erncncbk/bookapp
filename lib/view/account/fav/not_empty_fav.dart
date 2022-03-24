@@ -43,6 +43,7 @@ class _NotEmptyFavState extends State<NotEmptyFav> {
   Widget _notEmptyFav(
       BookStateProvider _bookStateProvider, ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

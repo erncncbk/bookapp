@@ -8,6 +8,7 @@ import 'package:bookapp/core/init/navigation/navigation_service.dart';
 import 'package:bookapp/core/init/notifier/theme_notifier.dart';
 import 'package:bookapp/core/init/provider/app_state/app_state_provider.dart';
 import 'package:bookapp/core/init/services/fb_auth_service.dart';
+import 'package:bookapp/core/init/services/process_service.dart';
 import 'package:bookapp/locator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,8 +28,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final AppStateProvider? _appStateProvider = locator<AppStateProvider>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ProcessService? _processService = locator<ProcessService>();
 
   bool isSwitched = false;
+
+  bool isConnectionOk = false;
+
+  @override
+  void initState() {
+    main();
+    super.initState();
+  }
+
+  Future main() async {
+    isConnectionOk = await _processService!.checkConnectionAsync(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final _themeProvider = Provider.of<ThemeNotifier>(context);
@@ -109,24 +124,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ))
                         ],
                       ),
-
-                // Container(
-                //   height: MediaQuery.of(context).size.height * 0.0875,
-                //   width: double.infinity,
-                //   child: IconButton(
-                //       padding: EdgeInsets.zero,
-                //       alignment: Alignment.centerRight,
-                //       icon: Transform(
-                //         transform: Matrix4.rotationY(pi),
-                //         child: SvgPicture.asset(
-                //           'menu'.toSVG,
-                //           color: _themeProvider.currentTheme != ThemeData.light()
-                //               ? AppColors.white
-                //               : AppColors.black,
-                //         ),
-                //       ),
-                //       onPressed: () => Navigator.pop(context)),
-                // ),
                 ListView.builder(
                   itemCount: Constant.titleList.length,
                   shrinkWrap: true,
@@ -230,7 +227,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           builder: (context, snapshot) {
             Map<String, dynamic>? data =
                 snapshot.data?.data() as Map<String, dynamic>?;
-            if (data != null && data['imageUrl'] != "") {
+            if (data != null && data['imageUrl'] != "" && isConnectionOk) {
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

@@ -90,6 +90,7 @@ class _GiftCardState extends State<GiftCard> {
 
   Widget _body(ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Column(

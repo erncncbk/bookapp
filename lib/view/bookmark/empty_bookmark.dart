@@ -27,6 +27,7 @@ class _EmptyBookmarkState extends State<EmptyBookmark> {
 
   Widget _emptyBookmark(ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: WidgetAnimator(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

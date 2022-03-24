@@ -34,8 +34,6 @@ class NavigationRoute {
   final AppStateProvider? _appStateProvider = locator<AppStateProvider>();
 
   Route<dynamic> generateRoute(RouteSettings args) {
-    var x = args.arguments;
-    print("Arguments: $x");
     switch (args.name) {
       //Splash Page
       case NavigationConstants.splahPage:

@@ -27,6 +27,7 @@ class _EmptyOrderState extends State<EmptyOrder> {
 
   Widget _emptyOrder(ThemeNotifier _themeProvider) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: WidgetAnimator(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

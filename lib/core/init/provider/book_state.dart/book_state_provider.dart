@@ -1,5 +1,4 @@
 import 'package:bookapp/core/constants/app/api_url.dart';
-import 'package:bookapp/core/constants/app/app_constants.dart';
 import 'package:bookapp/core/constants/enums/http_request_enum.dart';
 import 'package:bookapp/core/constants/models/book_lists_models.dart';
 import 'package:bookapp/core/constants/models/book_model.dart';
@@ -18,7 +17,7 @@ class BookStateProvider extends BookStateGetterAndSetter {
       if (response == null) {
         result = false;
       } else {
-        List<BookListModel> entity = Constant.book_list
+        List<BookListModel> entity = response
             .map<BookListModel>((f) => BookListModel.fromJson(f))
             .toList();
         setBookListModel(entity);
@@ -31,17 +30,6 @@ class BookStateProvider extends BookStateGetterAndSetter {
       result = true;
     }
     return result;
-
-    /// For Test Json
-    // if (Constant.book_list.isNotEmpty) {
-    //   List<BookListModel> entity = Constant.book_list
-    //       .map<BookListModel>((f) => BookListModel.fromJson(f))
-    //       .toList();
-    //   setBookListModel(entity);
-    //   result = true;
-    // } else {
-    //   result = false;
-    // }
   }
 
   Future<bool?> getBook() async {
@@ -60,16 +48,5 @@ class BookStateProvider extends BookStateGetterAndSetter {
       result = true;
     }
     return result;
-
-    /// For Test Json
-
-    // var num = getSelectedBookId.toString().replaceAll('0', "");
-    // BookModel entity = BookModel.fromJson(Constant.book[int.parse(num) - 1]);
-    // if (Constant.book.isNotEmpty) {
-    //   setBookModel(entity);
-    //   result = true;
-    // } else {
-    //   result = false;
-    // }
   }
 }

@@ -113,6 +113,7 @@ class _NotEmptyOrderState extends State<NotEmptyOrder> {
                     children: [
                       Expanded(
                         child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             itemCount: value.length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {

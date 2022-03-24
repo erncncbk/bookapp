@@ -51,20 +51,14 @@ class _HomeViewState extends State<HomeView> {
 
   Future main() async {
     await getBookListAsync();
-
     num = random(1, 6);
-    // Timer(
-    //   const Duration(milliseconds: 1000),
-    //   () => _scrollController?.jumpTo(_bookStateProvider!.getScrollPosition!),
-    // );
   }
 
   Future getBookListAsync() async {
     await _processService!.getRepositoryAsync(
-        context: context,
-        function: () async => await _bookStateProvider!.getBookList(),
-        setLoader: true,
-        isNotifier: true);
+      context: context,
+      function: () async => await _bookStateProvider!.getBookList(),
+    );
   }
 
   @override
@@ -89,14 +83,6 @@ class _HomeViewState extends State<HomeView> {
             ? CustomBottomNavigationBar()
             : SizedBox(),
         context: context);
-    // return ModalProgressHUD(
-    //   inAsyncCall: _appStateProvider!.isProgressIndicatorVisible!,
-    //   opacity: .7,
-    //   progressIndicator: const LoadingWidget(),
-    //   child: Scaffold(
-    //     body:
-    //   ),
-    // );
   }
 
   Widget _body(
@@ -107,15 +93,22 @@ class _HomeViewState extends State<HomeView> {
             children: [
               const SearchContainer(),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                    Container(
-                      height: 140,
-                      child: CustomCarouselCard(),
-                    ),
-                    _selectedBooks(_bookStateProvider, _themeProvider),
-                    __horizontalBookList(_bookStateProvider, _themeProvider),
-                  ]),
+                child: RefreshIndicator(
+                  onRefresh: getBookListAsync,
+                  color: _themeProvider.currentTheme != ThemeData.light()
+                      ? AppColors.white
+                      : AppColors.black,
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(children: [
+                      Container(
+                        height: 140,
+                        child: CustomCarouselCard(),
+                      ),
+                      _selectedBooks(_bookStateProvider, _themeProvider),
+                      __horizontalBookList(_bookStateProvider, _themeProvider),
+                    ]),
+                  ),
                 ),
               )
             ],
@@ -303,6 +296,7 @@ class _HomeViewState extends State<HomeView> {
       height: 300,
       width: double.infinity,
       child: ListView.builder(
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         itemCount: _bookStateProvider.getBookListModel?.length,
